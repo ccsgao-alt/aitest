@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>毛泽东书法《七律·长征》横版 A4 打印</title>
+  <style>
+    @page { size: A4 landscape; margin: 8mm; }
+    body { margin: 0; font-family: system-ui, sans-serif; background: #ddd; }
+    .toolbar {
+      position: sticky; top: 0; z-index: 9; padding: 12px 20px;
+      background: #1a1a1a; color: #fff; font-size: 14px;
+    }
+    .toolbar button { margin-right: 12px; padding: 8px 16px; cursor: pointer; }
+    @media print {
+      .toolbar { display: none; }
+      body { background: #fff; }
+      .sheet { break-after: page; box-shadow: none; margin: 0; }
+    }
+    .sheet {
+      width: 297mm; height: 210mm; margin: 16px auto; background: #fff;
+      box-shadow: 0 2px 12px rgba(0,0,0,.15);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; page-break-after: always;
+    }
+    .sheet img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <strong>横版 A4</strong>：打印时选「横向 Landscape」、纸张 A4。
+    <button type="button" onclick="window.print()">打印</button>
+    推荐直接使用同目录 PDF（300 DPI）。
+  </div>
+  <div id="pages"></div>
+  <script>
+    fetch("long-march-calligraphy/pages/manifest.json")
+      .then(r => r.json())
+      .then(files => {
+        const root = document.getElementById("pages");
+        const base = "long-march-calligraphy/pages/";
+        files.forEach(name => {
+          const div = document.createElement("div");
+          div.className = "sheet";
+          const img = document.createElement("img");
+          img.src = base + name;
+          img.alt = name;
+          div.appendChild(img);
+          root.appendChild(div);
+        });
+      });
+  </script>
+</body>
+</html>
